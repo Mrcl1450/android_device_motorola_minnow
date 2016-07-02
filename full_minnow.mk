@@ -12,9 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := $(call my-dir)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-include $(CLEAR_VARS)
+# The gps config appropriate for this device
+$(call inherit-product, device/common/gps/gps_us_supl.mk)
 
-# include the non-open-source counterpart to this file
--include vendor/motorola/minnow/AndroidBoardVendor.mk
+$(call inherit-product-if-exists, vendor/motorola/minnow/minnow-vendor.mk)
+
+$(call inherit-product, device/motorola/minnow/device.mk)
+
+DEVICE_PACKAGE_OVERLAYS += device/motorola/minnow/overlay
+
+$(call inherit-product, build/target/product/full.mk)
+
+PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+PRODUCT_NAME := full_minnow
+PRODUCT_DEVICE := minnow
